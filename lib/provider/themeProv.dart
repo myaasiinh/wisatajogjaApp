@@ -1,5 +1,6 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Themeprov with ChangeNotifier {
@@ -7,42 +8,24 @@ class Themeprov with ChangeNotifier {
 
   late SharedPreferences storage;
 
-  //Custom dark theme
+  Themeprov() {
+    _isDark = false; // Set default theme
+    init(); // Initialize theme
+  }
+
+  // Custom dark theme
   final darkTheme = ThemeData(
     primaryColor: Colors.black12,
     brightness: Brightness.dark,
     primaryColorDark: Colors.black12,
   );
 
-  //Custom light theme
+  // Custom light theme
   final lightTheme = ThemeData(
-      primaryColor: Colors.white,
-      brightness: Brightness.light,
-      primaryColorDark: Colors.white);
-
-  //Now we want to save the last changed theme value
-
-  //Dark mode toggle action
-  changeTheme() {
-    _isDark = !isDark;
-
-    //Save the value to secure storage
-    storage.setBool("isDark", _isDark);
-    notifyListeners();
-  }
-
-  //Init method of provider
-  init() async {
-    //After we re run the app
-    storage = await SharedPreferences.getInstance();
-    _isDark = storage.getBool("isDark") ?? false;
-    notifyListeners();
-  }
-
-  // Constructor
-  Themeprov({bool isDark = false}) {
-    _isDark = isDark;
-  }
+    primaryColor: Colors.white,
+    brightness: Brightness.light,
+    primaryColorDark: Colors.white,
+  );
 
   // Getter for isDark
   bool get isDark => _isDark;
@@ -52,9 +35,14 @@ class Themeprov with ChangeNotifier {
     _isDark = !_isDark;
     notifyListeners(); // Notify listeners to update UI
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isDarkMode', _isDark); // Save theme preference
+    // Save theme preference
+    storage.setBool('isDark', _isDark);
   }
 
-  void setDarkMode(bool isDarkMode) {}
+  // Initialize theme
+  Future<void> init() async {
+    storage = await SharedPreferences.getInstance();
+    _isDark = storage.getBool('isDark') ?? false; // Read theme preference
+    notifyListeners(); // Notify listeners to update UI
+  }
 }

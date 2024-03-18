@@ -4,6 +4,7 @@ import 'package:wisatajogja/model/tourism_place.dart';
 import 'package:wisatajogja/screen/settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
+  
   const MainScreen({Key? key}) : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class _MainScreenState extends State<MainScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 50),
+                const SizedBox(height: 50),
                 _buildUserInfoContainer(),
                 Expanded(child: _buildTourismPlaceList()),
               ],
@@ -46,14 +47,14 @@ class _MainScreenState extends State<MainScreen> {
               left: 0,
               right: 0,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 color: Colors.white, // Background color for the search bar
                 child: Row(
                   children: [
                     Expanded(
                       child: TextField(
                         controller: _searchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Search...',
                           border: InputBorder.none,
                         ),
@@ -153,7 +154,7 @@ class _MainScreenState extends State<MainScreen> {
             ),
           );
         } else {
-          return SizedBox(); // Placeholder widget if index is out of range
+          return const SizedBox(); // Placeholder widget if index is out of range
         }
       },
     );
