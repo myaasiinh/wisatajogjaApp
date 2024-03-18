@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wisatajogja/screen/detail_screen.dart';
 import 'package:wisatajogja/screen/main_screen.dart';
-import 'package:wisatajogja/model/tourism_place.dart';
 import 'package:wisatajogja/provider/themeProv.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wisatajogja/screen/settings_screen.dart';
 // void main() => runApp(const MainApp());
 
 Future main() async {
