@@ -30,65 +30,54 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Wisata Bandung'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: _showSearchDialog,
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Settings(),
-                ),
-              );
-            },
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
-          ),
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildUserInfoContainer(),
-          Expanded(child: _buildTourismPlaceList()),
-        ],
-      ),
-    );
-  }
-
-  void _showSearchDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: TextField(
-            controller: _searchController,
-            decoration: const InputDecoration(
-              hintText: 'Search...',
-              border: OutlineInputBorder(),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 50),
+                _buildUserInfoContainer(),
+                Expanded(child: _buildTourismPlaceList()),
+              ],
             ),
-            onChanged: _onSearchTextChanged,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Close'),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                color: Colors.white, // Background color for the search bar
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Search...',
+                          border: InputBorder.none,
+                        ),
+                        onChanged: _onSearchTextChanged,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Settings(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.settings),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
-        );
-      },
+        ),
+      ),
     );
   }
 
@@ -146,22 +135,26 @@ class _MainScreenState extends State<MainScreen> {
       itemCount: filteredPlaces.length,
       separatorBuilder: (BuildContext context, int index) => const Divider(),
       itemBuilder: (context, index) {
-        final place = filteredPlaces[index];
-        return InkWell(
-          onTap: () => _navigateToDetailScreen(place),
-          child: Card(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-            child: ListTile(
-              leading: Image.asset(
-                place.imageAsset,
-                width: 100,
-                fit: BoxFit.cover,
+        if (index < filteredPlaces.length) {
+          final place = filteredPlaces[index];
+          return InkWell(
+            onTap: () => _navigateToDetailScreen(place),
+            child: Card(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+              child: ListTile(
+                leading: Image.asset(
+                  place.imageAsset,
+                  width: 100,
+                  fit: BoxFit.cover,
+                ),
+                title: Text(place.name),
+                subtitle: Text(place.location),
               ),
-              title: Text(place.name),
-              subtitle: Text(place.location),
             ),
-          ),
-        );
+          );
+        } else {
+          return SizedBox(); // Placeholder widget if index is out of range
+        }
       },
     );
   }
